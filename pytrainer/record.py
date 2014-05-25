@@ -225,13 +225,16 @@ class Record:
 		max_hr = max([int(lap.get('max_hr', 0) or 0) for lap in laps])
 
 		avg_hr_time_pairs = [(lap.get('avg_hr', None), float(lap.get('elapsed_time', 0) or 0)) for lap in laps]
-
+		
 		for lap_avg_hr, elapsed_time in avg_hr_time_pairs:
 			if lap_avg_hr is not None:
 				total_duration += elapsed_time
 				ponderate_hr += elapsed_time * int(lap_avg_hr)
+				if lap_avg_hr > max_hr:
+					max_hr = lap_avg_hr
 
-		avg_hr = int(round(ponderate_hr / total_duration))  # ceil?, floor?, round?
+		if ponderate_hr > 0:
+			avg_hr = int(round(ponderate_hr / total_duration))  # ceil?, floor?, round?
 
 		logging.debug('<<')
 		return avg_hr, max_hr
