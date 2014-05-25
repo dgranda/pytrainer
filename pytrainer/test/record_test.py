@@ -55,3 +55,26 @@ class RecordTest(unittest.TestCase):
 		]
 
 		self.assertEqual(self.record.hrFromLaps(laps), (160, 180))
+		
+	def test_hrFromLaps_handlingOfBothAvgNone(self):
+		laps = [
+			{'elapsed_time': 300, 'avg_hr': None, 'max_hr': 180},
+			{'elapsed_time': 300, 'avg_hr': None, 'max_hr': 185}
+		]
+		self.assertEqual(self.record.hrFromLaps(laps), (0, 185))
+
+	def test_hrFromLaps_handlingOfBothMaxNone(self):
+		laps = [
+			{'elapsed_time': 300, 'avg_hr': 150, 'max_hr': None},
+			{'elapsed_time': 300, 'avg_hr': 160, 'max_hr': None}
+		]
+		self.assertEqual(self.record.hrFromLaps(laps), (155, 160))
+
+
+	def test_hrFromLaps_handlingOfBothNone(self):
+		laps = [
+			{'elapsed_time': 300, 'avg_hr': None, 'max_hr': None},
+			{'elapsed_time': 300, 'avg_hr': None, 'max_hr': None}
+		]
+		self.assertEqual(self.record.hrFromLaps(laps), (0, 0))
+
